@@ -11,7 +11,7 @@ pipeline {
                     // If you need to access SCM variables like GIT_BRANCH, GIT_COMMIT
                     // they are available. For example:
                     // echo "Building branch: ${env.GIT_BRANCH}"
-                    echo 'Script block placeholder'
+                    // echo 'Script block placeholder'
                 }
             }
         }
