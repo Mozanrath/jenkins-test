@@ -1,31 +1,37 @@
 pipeline {
-    agent any // This means Jenkins can use any available agent/executor
+    agent any
 
     stages {
         stage('Checkout') {
             steps {
-                // Jenkins automatically checks out the code from the SCM configured
-                // in the job when using "Pipeline script from SCM"
                 echo 'Code checkout handled by Jenkins SCM configuration.'
                 script {
-                    // If you need to access SCM variables like GIT_BRANCH, GIT_COMMIT
-                    // they are available. For example:
-                    // echo "Building branch: ${env.GIT_BRANCH}"
-                    echo 'Script block placeholder'
+                    echo 'Current branch: ${env.BRANCH_NAME}' // Example of using SCM variable
+                    echo 'Current commit: ${env.GIT_COMMIT}'  // Example of using SCM variable
                 }
             }
         }
-        stage('Verify Content') {
+        stage('Verify File Exists') { 
             steps {
-                echo 'Verifying content...'
+                echo 'Verifying file presence...'
                 sh 'ls -la' // List files in the workspace
                 sh 'cat index.html' // Print the content of index.html
-                echo 'Verification complete.'
+                echo 'Initial verification complete.'
+            }
+        }
+        stage('Validate HTML Content') { 
+            steps {
+                echo 'Validating specific content in index.html...'
+                // This command will succeed (exit code 0) if the string is found.
+                // If the string is NOT found, grep -q will exit with 1,
+                // causing the 'sh' step and thus the stage to fail.
+                sh 'grep -q "EXPECTED_CONTENT_SIGNATURE_V1" index.html'
+                echo 'Required content signature found in index.html.'
             }
         }
         stage('Simple Echo') {
             steps {
-                echo 'Jenkins job with Jenkinsfile ran successfully!'
+                echo 'Jenkins job with Jenkinsfile ran successfully!' // This stage won't run if the previous one fails
             }
         }
     }
