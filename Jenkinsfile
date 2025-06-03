@@ -25,8 +25,8 @@ pipeline {
                 // This command will succeed (exit code 0) if the string is found.
                 // If the string is NOT found, grep -q will exit with 1,
                 // causing the 'sh' step and thus the stage to fail.
-                sh 'grep -q "EXPECTED_CONTENT_SIGNATURE_V1" index.html'
-                echo 'Required content signature found in index.html.'
+                sh 'grep -q "Hello, World!" index.html'
+                echo 'Required content found in index.html.'
             }
         }
         stage('Simple Echo') {
